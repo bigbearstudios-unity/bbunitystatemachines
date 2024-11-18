@@ -24,21 +24,21 @@ namespace BBUnity.StateMachines.Internal {
         /// <summary>
         /// Called on each unity update
         /// </summary>
-        public override void OnUpdate() {
+        public override void Update() {
             _onTick?.Invoke();
         }
 
         /// <summary>
         /// Called upon entering the state
         /// </summary>
-        public override void OnEnter() {
+        public override void Enter() {
             _onEnter?.Invoke();
         }
 
         /// <summary>
         /// Called upon exiting the state
         /// </summary>
-        public override void OnExit() {
+        public override void Exit() {
             _onExit?.Invoke();
         }
     }

@@ -1,11 +1,10 @@
 using System;
+using UnityEngine.UIElements;
 
 namespace BBUnity.StateMachines {
 
     internal class StateAlreadyAssignedException : Exception {
-        public StateAlreadyAssignedException() { }
-        public StateAlreadyAssignedException(string message) : base(message) {}
-        public StateAlreadyAssignedException(string message, Exception inner) : base(message, inner) {}
+        public StateAlreadyAssignedException() : base(message: "BBUnity.StateMachines.State - State is already assigned to a state machine") {}
     }
 
     /// <summary>
@@ -13,39 +12,68 @@ namespace BBUnity.StateMachines {
     /// 
     /// Follows the simple flow of:
     /// - Constuctor (Called when the state is created)
-    /// - OnEnter (Called upon entering the state)
-    /// - OnExit (Called upon leaving the state)
-    /// - OnTick (Called upon a tick / update)
+    /// - Enter (Called upon entering the state)
+    /// - Exit (Called upon leaving the state)
+    /// - Update (Called upon a tick / update)
     /// </summary>
-    public abstract class State : IState {
+    public abstract class State {
 
-        protected StateMachine _subStateMachine;
-        protected StateMachine SubStateMachine {
-            get { return _subStateMachine; }
-        }
-
+        /// <summary>
+        /// Reference to the statemachine which owns this state
+        /// </summary>
         protected StateMachine _stateMachine;
         protected StateMachine StateMachine { get { return _stateMachine; } }
+        private string _referenceKey = null;
+        public string ReferenceKey {
+            get { return _referenceKey; }
+        }
+
+
+        /// <summary>
+        /// Sets the state machine reference to the passed statemachine, checks
+        /// if the reference is already set and throws exception
+        /// </summary>
+        /// <param name="stateMachine"></param>
+        /// <exception cref="StateAlreadyAssignedException"></exception>
         internal void SetStateMachine(StateMachine stateMachine) {
             if(_stateMachine != null) throw new StateAlreadyAssignedException();
 
             _stateMachine = stateMachine; 
         }
 
+        internal void SetReferenceKey(string key) {
+            _referenceKey = key;
+        }
+
         /// <summary>
-        /// Called upon the owning StateMachine's update
-        /// being called
+        /// Utility method which calls 'SetState' on the underlying StateMachine.
+        /// This functionality can be recreated manually by calling _stateMachine.SetState()
         /// </summary>
-        public virtual void OnUpdate() {}
+        /// <param name="key"></param>
+        /// <param name="forceTransition"></param>
+        protected void SetState(string key, bool forceTransition = false) {
+            _stateMachine.SetState(key, forceTransition);
+        }
+
+        public State() {}
+
+        // TODO
+        // Add some helper methods here which can be used to change the state directly
+        // via the statemachines update, enter, exit methods
+
+        /// <summary>
+        /// Called upon the statemachines update being called if this is the current state
+        /// </summary>
+        public virtual void Update() {}
 
         /// <summary>
         /// Called upon entering the state
         /// </summary>
-        public virtual void OnEnter() {}
+        public virtual void Enter() {}
 
         /// <summary>
         /// Called upon exiting the state
         /// </summary>
-        public virtual void OnExit() {}
+        public virtual void Exit() {}
     }
 }

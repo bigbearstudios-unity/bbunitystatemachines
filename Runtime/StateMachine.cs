@@ -19,7 +19,7 @@ namespace BBUnity.StateMachines {
         protected State _currentState = null;
         public State CurrentState {
             get { return _currentState; }
-        }
+        } 
 
         /// <summary>
         /// The available states. These are added by the Developer either via the constructor
@@ -29,27 +29,24 @@ namespace BBUnity.StateMachines {
 
         public StateMachine() { }
         public StateMachine(StateParameters states) {
-            AddState(states);
+            AddStates(states);
         }
 
-        protected void AddState(int key, State state, bool setCurrentState = false) {
-            state.SetStateMachine(this);
-
-            _availableStates.Add(key, state);
-
-            if(setCurrentState) { SetState(state); }
-        }
-
-        public void AddState(string key, State state, bool setCurrentState = false) {
+        public void AddState(string key, State state, bool setState = false) {
             if(key == null) throw new ArgumentNullException("key");
             
-            AddState(key.GetHashCode(), state, setCurrentState);
+            state.SetStateMachine(this);
+            state.SetReferenceKey(key);
+
+            _availableStates.Add(key.GetHashCode(), state);
+
+            if(setState) { SetState(state); }
         }
 
-        public void AddState(StateParameters states) {
-            if(states == null) throw new ArgumentNullException("states");
+        public void AddStates(StateParameters stateParameters) {
+            if(stateParameters == null) throw new ArgumentNullException("states");
             
-            foreach(StateParameter p in states) {
+            foreach(StateParameter p in stateParameters) {
                 AddState(p.Key, p.State, p.SetCurrentState);
             }
         }
@@ -80,13 +77,14 @@ namespace BBUnity.StateMachines {
         /// <param name="newState"></param>
         /// <returns></returns>
         protected void ReplaceState(State oldState, State newState) {
-            oldState?.OnExit();
+            oldState?.Exit();
             _currentState = newState;
-            newState?.OnEnter();
+
+            newState?.Enter();
         }
 
         public void Update() {
-            _currentState?.OnUpdate();
+            _currentState?.Update();
         }
 
         /// <summary>
@@ -94,7 +92,7 @@ namespace BBUnity.StateMachines {
         /// - Call OnEnter on the current transition
         /// </summary>
         public void Enter() {
-            _currentState?.OnEnter();
+            _currentState?.Enter();
         }
 
         /// <summary>
@@ -102,7 +100,7 @@ namespace BBUnity.StateMachines {
         /// - Call OnExit on the current transition
         /// </summary>
         public void Exit() {
-            _currentState?.OnExit();
+            _currentState?.Exit();
         }
 
         /*

@@ -12,15 +12,15 @@ enum States {
 }
 
 class MyState : State {
-    public void OnTick() {
+    public void Update() {
         Object.DoSomethingOnTick();
     }
 
-    public void OnEnter() {
+    public void Enter() {
         Object.DoSomethingOnEnter();
     }
 
-    public void OnExit() {
+    public void Exit() {
         Object.DoSomethingOnExit();
     }
 }
@@ -36,4 +36,5 @@ Once a state is running you can then
 
 ## TODO List
 
-- Tests required for TransitionalStateMachine
+- Tests required for all classes
+- TransitionalStateMachine requires thought
