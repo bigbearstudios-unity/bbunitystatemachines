@@ -1,14 +1,14 @@
 {
   "name": "com.bigbearstudios.bbunity-state-machines",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "displayName": "BBUnity State Machines",
   "description": "A collection of state machines to be used with Unity - Requires Unity / C# to use",
   "unity": "2018.3",
   "repository": {
     "type": "git",
-    "url": "git+https://gitlab.com/big-bear-studios-open-source/bbunitystatemachines.git"
+    "url": "https://github.com/bigbearstudios-unity/state-machines.git"
   },
-  "bugs": "https://gitlab.com/big-bear-studios-open-source/bbunitystatemachines/-/issues",
+  "bugs": "https://github.com/bigbearstudios-unity/state-machines/issues",
   "author": {
     "name": "Big Bear Studios",
     "email": "development@bigbearstudios.co.uk",
@@ -21,6 +21,6 @@
     }
   ],
   "dependencies": {
-    "com.bigbearstudios.bbunity-test-support": "2.1.0"
+    "com.bigbearstudios.bbunity-test-support": "2.1.1"
   }
 }
